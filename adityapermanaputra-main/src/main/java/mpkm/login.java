@@ -86,7 +86,7 @@ public login() {
         pack();
     }// </editor-fold>//GEN-END:initComponents
 
-private void jTextUsernameActionPerformed(java.awt.event.ActionEvent evt) {//GEN-FIRST:event_jTextUsernameActionPerformed
+private void jTextUsernameActionPerformed(java.awt.event.ActionEvent evt) {                                              
 }
 private void jTextPasswordActionPerformed(java.awt.event.ActionEvent evt) {                                              
 }     
@@ -107,7 +107,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 
     try (
         java.sql.Connection conn =
-            java.sql.DriverManager.getConnection(url, "root", "");
+            java.sql.DriverManager.getConnection(url, "root", "LCET6wvWcHR4mSTRSX9EZp4job2P");
 
         java.sql.PreparedStatement ps = conn.prepareStatement(
             "SELECT * FROM user WHERE username = ? AND password = ?"
@@ -119,9 +119,10 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         try (java.sql.ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
-                javax.swing.JOptionPane.showMessageDialog(
-                    this, "Login berhasil! Selamat datang, " + username
-                );
+                Dashboard dashboard = new Dashboard(username);
+                dashboard.setLocationRelativeTo(this);
+                dashboard.setVisible(true);
+                dispose();
             } else {
                 javax.swing.JOptionPane.showMessageDialog(
                     this, "Username atau password salah!"
