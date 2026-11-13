@@ -27,7 +27,7 @@ import javax.swing.table.DefaultTableModel;
 
 public class Dashboard extends JFrame {
 
-    private final TransaksiRepository repository = new TransaksiRepository();
+    private final TransaksiRepository repository;
     private final DefaultTableModel model = new DefaultTableModel(
             new Object[]{"ID", "Jenis", "Nominal", "Tanggal", "Kategori", "Keterangan"}, 0) {
         @Override
@@ -41,7 +41,8 @@ public class Dashboard extends JFrame {
     private final JLabel saldo = new JLabel("Rp0", SwingConstants.CENTER);
     private List<Transaksi> dataTransaksi;
 
-    public Dashboard(String username) {
+    public Dashboard(String username, TransaksiRepository repository) {
+        this.repository = repository;
         setTitle("ArusKAS - " + username);
         setSize(900, 550);
         setLocationRelativeTo(null);
@@ -81,13 +82,6 @@ public class Dashboard extends JFrame {
         add(new JScrollPane(table), BorderLayout.CENTER);
         add(tombol, BorderLayout.SOUTH);
 
-        addWindowListener(new java.awt.event.WindowAdapter() {
-            @Override
-            public void windowClosing(java.awt.event.WindowEvent event) {
-                HibernateUtil.tutup();
-            }
-        });
-
         muatData();
     }
 
@@ -101,7 +95,7 @@ public class Dashboard extends JFrame {
 
     private void muatData() {
         try {
-            dataTransaksi = repository.semua();
+            dataTransaksi = repository.findAllByOrderByTanggalDesc();
             model.setRowCount(0);
             for (Transaksi transaksi : dataTransaksi) {
                 model.addRow(new Object[]{
@@ -158,9 +152,9 @@ public class Dashboard extends JFrame {
                 transaksi.setTanggal(tanggalTransaksi);
                 transaksi.setKategori(namaKategori);
                 transaksi.setKeterangan(keterangan.getText().trim());
-                repository.ubah(transaksi);
+                repository.save(transaksi);
             } else {
-                repository.tambah(new Transaksi(
+                repository.save(new Transaksi(
                         jenisBaru, nilai, tanggalTransaksi, namaKategori, keterangan.getText().trim()));
             }
             muatData();
@@ -196,7 +190,7 @@ public class Dashboard extends JFrame {
                 this, "Hapus transaksi terpilih?", "Konfirmasi", JOptionPane.YES_NO_OPTION);
         if (pilihan == JOptionPane.YES_OPTION) {
             try {
-                repository.hapus(id);
+                repository.deleteById(id);
                 muatData();
             } catch (RuntimeException e) {
                 JOptionPane.showMessageDialog(this, "Gagal menghapus transaksi: " + e.getMessage());
@@ -219,7 +213,7 @@ public class Dashboard extends JFrame {
         }
 
         StringBuilder csv = new StringBuilder("ID,Jenis,Nominal,Tanggal,Kategori,Keterangan\r\n");
-        for (Transaksi transaksi : repository.semua()) {
+        for (Transaksi transaksi : repository.findAllByOrderByTanggalDesc()) {
             csv.append(transaksi.getId()).append(',')
                     .append(kutipCsv(transaksi.getJenis())).append(',')
                     .append(transaksi.getNominal()).append(',')

@@ -10,10 +10,15 @@ package mpkm;
  */
 public class login extends javax.swing.JFrame {
 
+    private final TransaksiRepository transaksiRepository;
+    private final String databasePassword;
+
     /**
      * Creates new form login
      */
-public login() {    
+public login(TransaksiRepository transaksiRepository, String databasePassword) {
+    this.transaksiRepository = transaksiRepository;
+    this.databasePassword = databasePassword;
     initComponents();
     jToggleButton1.addActionListener(evt -> jButton1ActionPerformed(evt));
 }
@@ -107,7 +112,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
 
     try (
         java.sql.Connection conn =
-            java.sql.DriverManager.getConnection(url, "root", "LCET6wvWcHR4mSTRSX9EZp4job2P");
+            java.sql.DriverManager.getConnection(url, "root", databasePassword);
 
         java.sql.PreparedStatement ps = conn.prepareStatement(
             "SELECT * FROM user WHERE username = ? AND password = ?"
@@ -119,7 +124,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         try (java.sql.ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
-                Dashboard dashboard = new Dashboard(username);
+                Dashboard dashboard = new Dashboard(username, transaksiRepository);
                 dashboard.setLocationRelativeTo(this);
                 dashboard.setVisible(true);
                 dispose();
