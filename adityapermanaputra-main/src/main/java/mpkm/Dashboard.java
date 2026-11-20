@@ -28,6 +28,7 @@ import javax.swing.table.DefaultTableModel;
 public class Dashboard extends JFrame {
 
     private final TransaksiRepository repository;
+    private final LaporanService laporanService;
     private final DefaultTableModel model = new DefaultTableModel(
             new Object[]{"ID", "Jenis", "Nominal", "Tanggal", "Kategori", "Keterangan"}, 0) {
         @Override
@@ -41,8 +42,9 @@ public class Dashboard extends JFrame {
     private final JLabel saldo = new JLabel("Rp0", SwingConstants.CENTER);
     private List<Transaksi> dataTransaksi;
 
-    public Dashboard(String username, TransaksiRepository repository) {
+    public Dashboard(String username, TransaksiRepository repository, LaporanService laporanService) {
         this.repository = repository;
+        this.laporanService = laporanService;
         setTitle("ArusKAS - " + username);
         setSize(900, 550);
         setLocationRelativeTo(null);
@@ -62,6 +64,7 @@ public class Dashboard extends JFrame {
         JButton ubah = new JButton("Ubah");
         JButton hapus = new JButton("Hapus");
         JButton ekspor = new JButton("Ekspor CSV");
+        JButton laporan = new JButton("Laporan Keuangan");
         JButton muatUlang = new JButton("Muat Ulang");
 
         tambahPemasukan.addActionListener(event -> bukaForm(null, "PEMASUKAN"));
@@ -69,6 +72,7 @@ public class Dashboard extends JFrame {
         ubah.addActionListener(event -> ubahPilihan());
         hapus.addActionListener(event -> hapusPilihan());
         ekspor.addActionListener(event -> eksporCsv());
+        laporan.addActionListener(event -> bukaLaporan());
         muatUlang.addActionListener(event -> muatData());
 
         tombol.add(tambahPemasukan);
@@ -76,6 +80,7 @@ public class Dashboard extends JFrame {
         tombol.add(ubah);
         tombol.add(hapus);
         tombol.add(ekspor);
+        tombol.add(laporan);
         tombol.add(muatUlang);
 
         add(ringkasan, BorderLayout.NORTH);
@@ -112,6 +117,22 @@ public class Dashboard extends JFrame {
             saldo.setText(rupiah(repository.saldo()));
         } catch (RuntimeException e) {
             JOptionPane.showMessageDialog(this, "Gagal memuat transaksi: " + e.getMessage());
+        }
+    }
+
+    private void bukaLaporan() {
+        try {
+            laporanService.tampilkanLaporan();
+        } catch (Exception e) {
+            Throwable penyebab = e;
+            while (penyebab.getCause() != null && penyebab.getCause() != penyebab) {
+                penyebab = penyebab.getCause();
+            }
+            String pesan = penyebab.getMessage();
+            if (pesan == null || pesan.isBlank()) {
+                pesan = penyebab.getClass().getSimpleName();
+            }
+            JOptionPane.showMessageDialog(this, "Gagal membuka laporan: " + pesan);
         }
     }
 

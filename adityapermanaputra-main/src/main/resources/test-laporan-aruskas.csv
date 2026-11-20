@@ -1,0 +1,6 @@
+﻿ID,Jenis,Nominal,Tanggal,Kategori,Keterangan
+3,"PEMASUKAN",270000.00,2026-11-20,"Jajan","Dikasih Ibu"
+4,"PENGELUARAN",3000.00,2026-11-20,"Parkir J3","Bayar Parkir"
+5,"PENGELUARAN",25000.00,2026-11-20,"Makan","Sarapan"
+6,"PENGELUARAN",180000.00,2026-11-20,"Meeting","Tomoro"
+1,"PEMASUKAN",150000.00,2026-11-06,"Gaji","Tes Hibernate"

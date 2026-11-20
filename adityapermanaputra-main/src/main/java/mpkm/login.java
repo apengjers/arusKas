@@ -11,13 +11,15 @@ package mpkm;
 public class login extends javax.swing.JFrame {
 
     private final TransaksiRepository transaksiRepository;
+    private final LaporanService laporanService;
     private final String databasePassword;
 
     /**
      * Creates new form login
      */
-public login(TransaksiRepository transaksiRepository, String databasePassword) {
+public login(TransaksiRepository transaksiRepository, LaporanService laporanService, String databasePassword) {
     this.transaksiRepository = transaksiRepository;
+    this.laporanService = laporanService;
     this.databasePassword = databasePassword;
     initComponents();
     jToggleButton1.addActionListener(evt -> jButton1ActionPerformed(evt));
@@ -124,7 +126,7 @@ private void jButton1ActionPerformed(java.awt.event.ActionEvent evt) {
         try (java.sql.ResultSet rs = ps.executeQuery()) {
 
             if (rs.next()) {
-                Dashboard dashboard = new Dashboard(username, transaksiRepository);
+                Dashboard dashboard = new Dashboard(username, transaksiRepository, laporanService);
                 dashboard.setLocationRelativeTo(this);
                 dashboard.setVisible(true);
                 dispose();

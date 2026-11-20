@@ -15,11 +15,12 @@ public class Main {
                 .run(args);
 
         TransaksiRepository repository = context.getBean(TransaksiRepository.class);
+        LaporanService laporanService = context.getBean(LaporanService.class);
         String databasePassword = context.getEnvironment().getProperty("spring.datasource.password", "");
         Runtime.getRuntime().addShutdownHook(new Thread(context::close));
 
         javax.swing.SwingUtilities.invokeLater(() -> {
-            login frame = new login(repository, databasePassword);
+            login frame = new login(repository, laporanService, databasePassword);
 
             frame.setLocationRelativeTo(null);
             frame.setVisible(true);

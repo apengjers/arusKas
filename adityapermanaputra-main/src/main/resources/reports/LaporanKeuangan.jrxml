@@ -1,0 +1,199 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<jasperReport xmlns="http://jasperreports.sourceforge.net/jasperreports"
+              xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+              xsi:schemaLocation="http://jasperreports.sourceforge.net/jasperreports http://jasperreports.sourceforge.net/xsd/jasperreport.xsd"
+              name="LaporanKeuangan" pageWidth="595" pageHeight="842" columnWidth="545"
+              leftMargin="25" rightMargin="25" topMargin="24" bottomMargin="24"
+              whenNoDataType="AllSectionsNoDetail" uuid="c6402310-ba35-47a2-ab8c-0f51671552a6">
+    <property name="com.jaspersoft.studio.data.defaultdataadapter" value="One Empty Record"/>
+    <property name="net.sf.jasperreports.default.locale" value="id_ID"/>
+    <style name="Judul" fontName="SansSerif" fontSize="22" isBold="true" forecolor="#FFFFFF"/>
+    <style name="Subjudul" fontName="SansSerif" fontSize="10" forecolor="#DCE8ED"/>
+    <style name="HeaderTabel" fontName="SansSerif" fontSize="9" isBold="true" forecolor="#FFFFFF"/>
+    <style name="IsiTabel" fontName="SansSerif" fontSize="9" forecolor="#243746"/>
+    <queryString language="SQL">
+        <![CDATA[
+SELECT id, tanggal, jenis, kategori, keterangan, nominal
+FROM transaksi
+ORDER BY tanggal DESC, id DESC
+        ]]>
+    </queryString>
+    <field name="id" class="java.lang.Long"/>
+    <field name="tanggal" class="java.sql.Date"/>
+    <field name="jenis" class="java.lang.String"/>
+    <field name="kategori" class="java.lang.String"/>
+    <field name="keterangan" class="java.lang.String"/>
+    <field name="nominal" class="java.math.BigDecimal"/>
+    <variable name="totalPemasukan" class="java.math.BigDecimal" calculation="Sum">
+        <variableExpression><![CDATA["PEMASUKAN".equals($F{jenis}) ? $F{nominal} : java.math.BigDecimal.ZERO]]></variableExpression>
+    </variable>
+    <variable name="totalPengeluaran" class="java.math.BigDecimal" calculation="Sum">
+        <variableExpression><![CDATA["PENGELUARAN".equals($F{jenis}) ? $F{nominal} : java.math.BigDecimal.ZERO]]></variableExpression>
+    </variable>
+    <title>
+        <band height="70" splitType="Stretch">
+            <rectangle>
+                <reportElement mode="Opaque" x="0" y="0" width="545" height="64" backcolor="#174A63" uuid="41756275-6d41-4515-9752-d67f86b5d9f5"/>
+                <graphicElement>
+                    <pen lineWidth="0"/>
+                </graphicElement>
+            </rectangle>
+            <staticText>
+                <reportElement x="16" y="9" width="513" height="32" forecolor="#FFFFFF" uuid="6654b74a-cf43-46be-90bd-aa8e32f35677"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="22" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+                </textElement>
+                <text><![CDATA[Laporan Keuangan ArusKAS]]></text>
+            </staticText>
+            <staticText>
+                <reportElement x="17" y="42" width="510" height="16" forecolor="#DCE8ED" uuid="95b4b15b-0917-4203-858d-ddaa478d1b52"/>
+                <textElement verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="10" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+                </textElement>
+                <text><![CDATA[Daftar pemasukan dan pengeluaran]]></text>
+            </staticText>
+        </band>
+    </title>
+    <pageHeader>
+        <band height="25" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="4" width="545" height="16" forecolor="#526674" uuid="5b32c2fd-1f96-4c85-80b7-e1a4d9200f18"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle">
+                    <font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/>
+                </textElement>
+                <textFieldExpression><![CDATA["Dicetak " + new java.text.SimpleDateFormat("dd MMMM yyyy", new java.util.Locale("id", "ID")).format(new java.util.Date())]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageHeader>
+    <columnHeader>
+        <band height="26" splitType="Stretch">
+            <staticText>
+                <reportElement mode="Opaque" x="0" y="0" width="38" height="26" backcolor="#174A63" forecolor="#FFFFFF" uuid="f8318a1e-1bf8-4469-a5c8-b51d1256cb1c"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[ID]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="38" y="0" width="77" height="26" backcolor="#174A63" forecolor="#FFFFFF" uuid="79bf84a2-da4c-4d8f-8d12-5e7f6238c9a8"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Tanggal]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="115" y="0" width="84" height="26" backcolor="#174A63" forecolor="#FFFFFF" uuid="00642f49-c99b-4db2-a621-971a480e1e3f"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Jenis]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="199" y="0" width="95" height="26" backcolor="#174A63" forecolor="#FFFFFF" uuid="0b393af1-2fc8-4c8f-9c47-a1baa74ab68d"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Kategori]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="294" y="0" width="155" height="26" backcolor="#174A63" forecolor="#FFFFFF" uuid="990e0390-8ac5-4dcc-a08d-5266123def5e"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Keterangan]]></text>
+            </staticText>
+            <staticText>
+                <reportElement mode="Opaque" x="449" y="0" width="96" height="26" backcolor="#174A63" forecolor="#FFFFFF" uuid="0201be62-2132-49d7-b87a-2554a51b8904"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Nominal]]></text>
+            </staticText>
+        </band>
+    </columnHeader>
+    <detail>
+        <band height="23" splitType="Stretch">
+            <textField>
+                <reportElement x="0" y="0" width="38" height="23" forecolor="#526674" uuid="2bb512eb-c165-4ce4-8e6f-befb25232b49"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[$F{id}]]></textFieldExpression>
+            </textField>
+            <textField pattern="dd-MM-yyyy">
+                <reportElement x="38" y="0" width="77" height="23" forecolor="#243746" uuid="6c7c06be-c6c2-4bcc-b5e8-05a737afbd42"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[$F{tanggal}]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="115" y="0" width="84" height="23" forecolor="#243746" uuid="e7aee11c-2ce0-4d0c-8e4d-433c9e5b6843"/>
+                <textElement textAlignment="Center" verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[$F{jenis}]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="199" y="0" width="95" height="23" forecolor="#243746" uuid="f0543708-e2fb-4de4-82a6-a3cc37ed442e"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[$F{kategori}]]></textFieldExpression>
+            </textField>
+            <textField isBlankWhenNull="true">
+                <reportElement x="294" y="0" width="155" height="23" forecolor="#243746" uuid="9ab60e68-0f6d-4ee8-88b7-52295c989d49"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[$F{keterangan}]]></textFieldExpression>
+            </textField>
+            <textField>
+                <reportElement x="449" y="0" width="96" height="23" forecolor="#243746" uuid="4bd9a8ad-afb7-4101-8b24-8f98f47d5627"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("id", "ID")).format($F{nominal})]]></textFieldExpression>
+            </textField>
+            <line>
+                <reportElement x="0" y="22" width="545" height="1" forecolor="#DCE5E9" uuid="a461c690-880c-417a-bc6a-425735f048d1"/>
+            </line>
+        </band>
+    </detail>
+    <pageFooter>
+        <band height="24" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="0" width="545" height="1" forecolor="#DCE5E9" uuid="1d059c09-e92f-4bc8-9967-ebd246806aed"/>
+            </line>
+            <staticText>
+                <reportElement x="0" y="5" width="300" height="14" forecolor="#526674" uuid="ac263195-53dc-43a9-ab4d-c6e1dc77c3ba"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[ArusKAS]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="398" y="5" width="70" height="14" forecolor="#526674" uuid="f2e24a9d-772c-4f1e-8f88-830cd477bad2"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA["Halaman " + $V{PAGE_NUMBER} + " / "]]></textFieldExpression>
+            </textField>
+            <textField evaluationTime="Report">
+                <reportElement x="469" y="5" width="76" height="14" forecolor="#526674" uuid="db456b58-11d4-42d3-a616-9d699413ca10"/>
+                <textElement verticalAlignment="Middle"><font fontName="SansSerif" size="8" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[$V{PAGE_NUMBER}]]></textFieldExpression>
+            </textField>
+        </band>
+    </pageFooter>
+    <summary>
+        <band height="102" splitType="Stretch">
+            <line>
+                <reportElement x="0" y="5" width="545" height="1" forecolor="#174A63" uuid="15696da3-203b-4d51-8aa9-5f8ebd24c8e1"/>
+            </line>
+            <staticText>
+                <reportElement x="294" y="16" width="140" height="20" forecolor="#526674" uuid="600e7da9-19f9-4798-8e9b-7bd033c3ec09"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Total pemasukan]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="439" y="16" width="106" height="20" forecolor="#16734A" uuid="86cb7bfd-5c98-4b0b-a7ab-1c1c861cb28a"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("id", "ID")).format($V{totalPemasukan} == null ? java.math.BigDecimal.ZERO : $V{totalPemasukan})]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="294" y="39" width="140" height="20" forecolor="#526674" uuid="2d1eced7-f142-4083-8e38-a5815ac5f05c"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9" pdfFontName="Helvetica" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Total pengeluaran]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="439" y="39" width="106" height="20" forecolor="#B5483A" uuid="5eb5e66d-da34-476d-9e8e-0bd8462a31ad"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="9" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("id", "ID")).format($V{totalPengeluaran} == null ? java.math.BigDecimal.ZERO : $V{totalPengeluaran})]]></textFieldExpression>
+            </textField>
+            <staticText>
+                <reportElement x="294" y="62" width="140" height="22" forecolor="#174A63" uuid="c879d3a8-8ed0-46d7-8562-0effbd1eb638"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <text><![CDATA[Saldo akhir]]></text>
+            </staticText>
+            <textField>
+                <reportElement x="439" y="62" width="106" height="22" forecolor="#174A63" uuid="cc80ad73-415f-4460-a760-66b707f0875b"/>
+                <textElement textAlignment="Right" verticalAlignment="Middle"><font fontName="SansSerif" size="10" isBold="true" pdfFontName="Helvetica-Bold" pdfEncoding="Cp1252" isPdfEmbedded="false"/></textElement>
+                <textFieldExpression><![CDATA[java.text.NumberFormat.getCurrencyInstance(new java.util.Locale("id", "ID")).format(($V{totalPemasukan} == null ? java.math.BigDecimal.ZERO : $V{totalPemasukan}).subtract($V{totalPengeluaran} == null ? java.math.BigDecimal.ZERO : $V{totalPengeluaran}))]]></textFieldExpression>
+            </textField>
+        </band>
+    </summary>
+
+</jasperReport>
